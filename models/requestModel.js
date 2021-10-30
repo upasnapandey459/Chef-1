@@ -1,17 +1,17 @@
 const logger = require('../utils/other/logger')
 const dbUtil = require('../utils/db_related/dbUtil')
-const {
-    insertIntoTable,
+const { insertIntoTable,
     selectFromTable,
     updateTable
  } = require('../utils/db_related/queryUtil');
-const fileName = 'dishModels';
+const fileName = 'requestModel';
 
 
-module.exports.dishadd = async (columns,values)=>
+
+module.exports.requestAdd = async (columns,values)=>
 {
-    logger.info(`${fileName} dishadd called`);
-    let sqlQuery = insertIntoTable("Dishes",columns);
+    logger.info(`${fileName} requestModel called`);
+    let sqlQuery = insertIntoTable("Requests",columns);
     let client = await dbUtil.getTransaction();
     try
     {
@@ -22,36 +22,18 @@ module.exports.dishadd = async (columns,values)=>
     }
     catch(error)
     {
-        logger.error(`${fileName} dishadd ${error.message}`);
+        logger.error(`${fileName} requestMode ${error.message}`);
         await dbUtil.rollback(client);
         throw new Error(error.message);
     }
 }
 
-module.exports.dishGet = async ()=>
-{
-    logger.info(`${fileName} dishget called`)
-    let sqlQuery = `select * from "Dishes"`;
-    let client = await dbUtil.getTransaction();
-    try
-    {
-        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery);
-        await dbUtil.commit(client);
-        return result;
 
-    }
-    catch(error)
-    {
-        logger.error(`${fileName} dishget ${error.message}`);
-        await dbUtil.rollback(client);
-        throw new Error(error.message);
-    }
-}
 
-module.exports.dishGetByID = async (id)=>
+module.exports.getRequestbyID = async (id)=>
 {
     logger.info(`${fileName} dishgetid called`)
-    let sqlQuery = `select * from "Dishes" where id = $1`;
+    let sqlQuery = `select * from "Requests" where id = $1`;
     let data = [id];
     let client = await dbUtil.getTransaction();
     try
@@ -63,6 +45,26 @@ module.exports.dishGetByID = async (id)=>
     catch(error)
     {
         logger.error(`${fileName} dishgetid ${error.message}`);
+        await dbUtil.rollback(client);
+        throw new Error(error.message);
+    }
+}
+
+module.exports.deleteRequestById = async (id)=>
+{
+    logger.info(`${fileName} deleteRequestById called`)
+    let sqlQuery = `delete from "Requests" where id = $1`;
+    let data = [id];
+    let client = await dbUtil.getTransaction();
+    try
+    {
+        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,data);
+        await dbUtil.commit(client);
+        return result;
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} deleteRequestById ${error.message}`);
         await dbUtil.rollback(client);
         throw new Error(error.message);
     }
