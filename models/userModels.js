@@ -67,3 +67,43 @@ module.exports.updateUserDetails = async (columns,values)=>
         throw new Error(error.message);
     }
 }
+
+module.exports.getUserDetailsByToken = async (token)=>
+{
+    logger.info(`${fileName} getUserDetailsByToken() called`)
+    let sqlQuery = `select * from "Users" where access_token = $1`;
+    let data = [token];
+    let client = await dbUtil.getTransaction();
+    try
+    {
+        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,data);
+        await dbUtil.commit(client);
+        return result;
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getUserDetailsByToken() ${error.message}`);
+        await dbUtil.rollback(client);
+        throw new Error(error.message);
+    }
+}
+
+module.exports.getUserDetailsById = async (token)=>
+{
+    logger.info(`${fileName} getUserDetailsById() called`)
+    let sqlQuery = `select * from "Users" where access_token = $1`;
+    let data = [token];
+    let client = await dbUtil.getTransaction();
+    try
+    {
+        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,data);
+        await dbUtil.commit(client);
+        return result;
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getUserDetailsById() ${error.message}`);
+        await dbUtil.rollback(client);
+        throw new Error(error.message);
+    }
+}

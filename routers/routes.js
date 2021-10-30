@@ -10,7 +10,10 @@ router.get("/check",(req,res)=>{
 // Users
 router.post("/signUp",userController.signUp);
 router.post("/signIn",userController.signIn);
+router.post("/autoSignIn",userController.autoSignIn);
+router.get("/getUserDetailsById:id",userController.getUserDetailsById);
 
+// Dishes
 router.post('/dish-add',dishController.dishadd);
 
 
