@@ -126,7 +126,7 @@ module.exports.getOrderDetailsById = async (req,res)=>
     try
     {
         logger.info(`${fileName} getOrderDetailsById() called`);
-        let id = req.id;
+        let id = req.query.id;
         let details = await ordersModel.getOrderDetailsById(id);
         if(details.rowCount>0)
         {
