@@ -88,11 +88,11 @@ module.exports.getUserDetailsByToken = async (token)=>
     }
 }
 
-module.exports.getUserDetailsById = async (token)=>
+module.exports.getUserDetailsById = async (id)=>
 {
     logger.info(`${fileName} getUserDetailsById() called`)
-    let sqlQuery = `select * from "Users" where access_token = $1`;
-    let data = [token];
+    let sqlQuery = `select * from "Users" where id = $1`;
+    let data = [id];
     let client = await dbUtil.getTransaction();
     try
     {

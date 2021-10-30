@@ -268,6 +268,7 @@ module.exports.getUserDetailsById = async (req,res)=>
     {
         logger.info(`${fileName} getUserDetailsById() called`);
         let id = req.query.id;
+        console.log("ASd asd asd asd asd asd asd asd asd asd asd asd",id)
         let details = await userModels.getUserDetailsById(id);
         if(details.rowCount>0)
         {

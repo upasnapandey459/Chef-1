@@ -8,14 +8,17 @@ router.get("/check",(req,res)=>{
 });
 
 //dishes
-router.get("/dish-get",dishController.dishGet);
-router.get("/dish-get/id:id" ,dishController.dishGetByID);
+router.get("/getDish",dishController.dishGet);
+router.get("/getDishByID" ,dishController.dishGetByID);
 router.post('/dish-add',dishController.dishadd);
+
+
 
 // Users
 router.post("/signUp",userController.signUp);
 router.post("/signIn",userController.signIn);
 router.post("/autoSignIn",userController.autoSignIn);
-router.get("/getUserDetailsById:id",userController.getUserDetailsById);
+router.get("/getUserDetailsById",userController.getUserDetailsById);
+
 
 module.exports = router
