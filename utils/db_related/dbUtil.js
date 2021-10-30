@@ -15,7 +15,7 @@ const pgconfig = {
 
 const pool = new Pool(pgconfig);
 
-// logger.info(`DB Connection Settings: ${JSON.stringify(pgconfig)}`);
+logger.info(`DB Connection Settings: ${JSON.stringify(pgconfig)}`);
 
 pool.on('error', function (err, client) {
     logger.error(`idle client error, ${err.message} | ${err.stack}`);
