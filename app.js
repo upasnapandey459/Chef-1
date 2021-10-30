@@ -8,7 +8,6 @@ const config = require("./config/config");
 const logger = require("./utils/other/logger");
 const cluster = require('cluster');
 let numCPUs = require('os').cpus().length;
-const SCHEDULER = require("./utils/other/scheduler");
 
 // app.use(bodyParser.urlencoded({extended:true}));
 // app.use(bodyParser.json());
@@ -28,7 +27,6 @@ if (numCPUs > 4) {
 
 if (cluster.isMaster) {
     // create a worker for each CPU
-    SCHEDULER.expireCreditPoints();
     for (let i = 0; i < numCPUs; i++) {
         cluster.fork();
     }
