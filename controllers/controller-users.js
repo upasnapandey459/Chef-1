@@ -158,3 +158,143 @@ module.exports.signIn = async (req,res)=>
         })
     }
 }
+
+module.exports.autoSignIn = async (req,res)=>
+{
+    try
+    {
+        let accessToken = req.headers["authorization"];
+        accessToken = accessToken.split(" ")[1];
+        let isVerified = await token.validateToken(accessToken);
+        if(isVerified)
+        {
+            let details = await userModels.getUserDetailsByToken(accessToken);
+            if(details.rowCount>0)
+            {
+                let email = details.rows[0].email;
+                let newAccessToken = await token.generateToken(email);
+                let newRefreshToken = await token.generateRefreshToken(email);
+                const columns = [
+                    "access_token",
+                    "reset_token"
+                ];
+                const values = [
+                    newAccessToken,
+                    newRefreshToken,
+                    details.rows[0].id
+                ] 
+                let result = await userModels.updateUserDetails(columns,values);
+                return res.status(200).json({
+                    status:`success`,
+                    message:`Successfully Done!`,
+                    statusCode:200,
+                    data:result.rows[0]
+                })
+            }
+            else
+            {
+                return res.status(400).json({
+                    status:`error`,
+                    message:`No User Found`,
+                    statusCode:400,
+                    data:[]
+                })
+            }
+        }
+        else
+        {
+            let details = await userModels.getUserDetailsByToken(accessToken);
+            if(details.rowCount>0)
+            {
+                let refreshToken = details.rows[0].reset_token;
+                let email = details.rows[0].email;
+                let isVerified = await token.validateRefreshToken(refreshToken);
+                if(isVerified)
+                {
+                    let newAccessToken = await token.generateToken(email);
+                    let newRefreshToken = await token.generateRefreshToken(email);
+                    const columns = [
+                        "access_token",
+                        "reset_token"
+                    ];
+                    const values = [
+                        newAccessToken,
+                        newRefreshToken,
+                        details.rows[0].id
+                    ]
+                    let result = await userModels.updateUserDetails(columns,values);
+                    if(result.rowCount>0)
+                    {
+                        return res.status(200).json({
+                            status:`success`,
+                            message:`Successfully Done!`,
+                            statusCode:200,
+                            data:result.rows[0]
+                        })
+                    }
+                }
+                else
+                {
+                    return res.status(400).json({
+                        status:`error`,
+                        message:`Unauthorized`,
+                        statusCode:400,
+                        data:isVerified
+                    })
+                }
+            }
+            return res.status(400).json({
+                status:`error`,
+                message:`Unauthorized Access`,
+                statusCode:400,
+                data:[]
+            })
+        }
+    }
+    catch(error)
+    {
+        logger.error(`controller-user autoSignIn() ${error.message}`);
+        return res.status(500).json({
+            statusCode:500,
+            status:`error`,
+            message:error.message
+        })
+    }
+}
+
+module.exports.getUserDetailsById = async (req,res)=>
+{
+    try
+    {
+        logger.info(`${fileName} getUserDetailsById() called`);
+        let id = req.query.id;
+        let details = await userModels.getUserDetailsById(id);
+        if(details.rowCount>0)
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:200,
+                data:details.rows[0]
+            })
+        }
+        else
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`No user found`,
+                statusCode:200,
+                data:[]
+            })
+        }
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getUserDetailsById() ${error.message}`);
+        return res.status(500).json({
+            statusCode:500,
+            status:`error`,
+            message:error.message
+        })
+    }
+}
