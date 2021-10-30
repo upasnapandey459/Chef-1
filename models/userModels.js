@@ -107,3 +107,23 @@ module.exports.getUserDetailsById = async (id)=>
         throw new Error(error.message);
     }
 }
+
+module.exports.addChefDishes = async (columns,values)=>
+{
+    logger.info(`${fileName} addChefDishes() called`)
+    let sqlQuery = insertIntoTable("Chef_Dishes",columns);
+    // let data = [];
+    let client = await dbUtil.getTransaction();
+    try
+    {
+        let result = await dbUtil.sqlExecMultipleRows(client,sqlQuery,values);
+        await dbUtil.commit(client);
+        return result;
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} addChefDishes() ${error.message}`);
+        await dbUtil.rollback(client);
+        throw new Error(error.message);
+    }
+}

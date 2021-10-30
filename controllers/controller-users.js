@@ -56,7 +56,29 @@ module.exports.signUp = async (req,res)=>
             access_token,
             reset_token,
             charges
-        ]
+        ];
+        if(role=="chef" && req.body.dishes!= undefined && req.body.dishes.length>0){
+            let dishes = req.body.dishes;
+            const columns = [
+                "user_id",
+                "dish_id"
+            ];
+            let values = [];
+            for(let i=0;i<dishes.length;i++)
+            {
+                values.push([id,dishes[i]]);
+            }
+            let result = await userModels.addChefDishes(columns,values);
+            if(result.rowCount<1)
+            {
+                return res.status(400).json({
+                    status:`error`,
+                    message:"Something went wrong while adding dishes",
+                    statusCode:400,
+                    data:[]
+                })
+            }
+        }
         let details = await userModels.signUp(columns,values);
         if(details.rowCount>0)
         {
