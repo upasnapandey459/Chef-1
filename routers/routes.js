@@ -6,7 +6,9 @@ router.get("/check",(req,res)=>{
     return res.send("Check OK")
 });
 
+// Users
 router.post("/signUp",userController.signUp);
+router.post("/signIn",userController.signIn);
 
 
 module.exports = router
