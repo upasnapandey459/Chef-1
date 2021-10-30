@@ -320,3 +320,49 @@ module.exports.getUserDetailsById = async (req,res)=>
         })
     }
 }
+
+module.exports.signOut = async (req,res)=>
+{
+    try
+    {
+        logger.info(`${fileName} signOut() called`)
+        let id = req.body.id;
+        const columns = [
+            "access_token",
+            "reset_token"
+        ];
+        const values = [
+            null,
+            null,
+            id
+        ]
+        let details = await userModels.updateUserDetails(columns,values);
+        if(details.rowCount>0)
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:200,
+                data:[]
+            })
+        }
+        else
+        {
+            return res.status(400).json({
+                status:`error`,
+                message:errMessage,
+                statusCode:400,
+                data:[]
+            })
+        }
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} signOut() ${error.message}`);
+        return res.status(500).json({
+            statusCode:500,
+            status:`error`,
+            message:error.message
+        })
+    }
+}
