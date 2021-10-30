@@ -11,7 +11,7 @@ module.exports.dishadd = async (req,res)=>
 {
     try
     {
-        logger.info(`${fileName} signUp() called`);
+        logger.info(`${fileName} dishadd called`);
         let id =await uniqueId.generateConflictHandlingId();
         let name = req.body.name;
         let picture = req.body.picture;
@@ -25,7 +25,7 @@ module.exports.dishadd = async (req,res)=>
             name,
             picture
         ]
-        let details = await dishModel.dish(columns,values);
+        let details = await dishModel.dishadd(columns,values);
       
         if(details.rowCount>0)
         {
@@ -48,7 +48,85 @@ module.exports.dishadd = async (req,res)=>
     }
     catch(error)
     {
-        logger.error(`${fileName} signUp() ${error.message}`);
+        logger.error(`${fileName} dishadd ${error.message}`);
+        return res.status(500).json({
+            statusCode:500,
+            status:`error`,
+            message:error.message
+        })
+    }
+}
+
+
+
+module.exports.dishGet = async (req,res)=>
+{
+    try
+    {
+        logger.info(`${fileName} dishget called`);
+        let details = await dishModel.dishGet();
+        // console.log(details)
+       
+        if(details.rowCount>0)
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:200,
+                data:details.rows
+            })
+        }
+        else
+        {
+            return res.status(400).json({
+                status:`error`,
+                message:errMessage,
+                statusCode:400,
+                data:[]
+            })
+        }
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} dishget ${error.message}`);
+        return res.status(500).json({
+            statusCode:500,
+            status:`error`,
+            message:error.message
+        })
+    }
+}
+
+module.exports.dishGetByID = async (req,res)=>
+{
+    try
+    {
+        logger.info(`${fileName} dishgetid called`);
+        let id = req.query.id;
+
+        let details = await dishModel.dishGetByID(id);
+        if(details.rowCount>0)
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:200,
+                data:details.rows
+            })
+        }
+        else
+        {
+            return res.status(400).json({
+                status:`error`,
+                message:errMessage,
+                statusCode:400,
+                data:[]
+            })
+        }
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} dishgetid ${error.message}`);
         return res.status(500).json({
             statusCode:500,
             status:`error`,
