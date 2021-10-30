@@ -7,13 +7,16 @@ router.get("/check",(req,res)=>{
     return res.send("Check OK")
 });
 
+//dishes
 router.get("/dish-get",dishController.dishGet);
-
 router.get("/dish-get/id:id" ,dishController.dishGetByID);
-
-router.post("/signUp",userController.signUp);
-
 router.post('/dish-add',dishController.dishadd);
+
+// Users
+router.post("/signUp",userController.signUp);
+router.post("/signIn",userController.signIn);
+
+
 
 
 

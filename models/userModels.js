@@ -31,7 +31,7 @@ module.exports.signUp = async (columns,values)=>
 {
     logger.info(`${fileName} signUp() called`);
     let sqlQuery = insertIntoTable("Users",columns);
-    // let data = [];
+    sqlQuery += " returning *"
     let client = await dbUtil.getTransaction();
     try
     {
@@ -42,6 +42,27 @@ module.exports.signUp = async (columns,values)=>
     catch(error)
     {
         logger.error(`${fileName} signUp() ${error.message}`);
+        await dbUtil.rollback(client);
+        throw new Error(error.message);
+    }
+}
+
+module.exports.updateUserDetails = async (columns,values)=>
+{
+    logger.info(`${fileName} updateUserDetails() called`)
+    let sqlQuery = updateTable("Users",columns,"id");
+    sqlQuery += " returning *"
+    // let data = [];
+    let client = await dbUtil.getTransaction();
+    try
+    {
+        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,values);
+        await dbUtil.commit(client);
+        return result;
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} updateUserDetails() ${error.message}`);
         await dbUtil.rollback(client);
         throw new Error(error.message);
     }
