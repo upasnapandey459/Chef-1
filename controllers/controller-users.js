@@ -27,6 +27,7 @@ module.exports.signUp = async (req,res)=>
         let password = req.body.password;
         password = await passwordHandler.encodePassword(password);
         let mobile_number = req.body.mobile_number;
+        let location = req.body.location || "Delhi";
         const id = uniqueId.generateConflictHandlingId();
         let role = req.body.role || "user";
         let profile_picture  = req.body.profile_picture || null;
@@ -43,7 +44,8 @@ module.exports.signUp = async (req,res)=>
             "role",
             "access_token",
             "reset_token",
-            "charges"
+            "charges",
+            "location"
         ];
         const values = [
             id,
@@ -55,7 +57,8 @@ module.exports.signUp = async (req,res)=>
             role,
             access_token,
             reset_token,
-            charges
+            charges,
+            location
         ];
         if(role=="chef" && req.body.dishes!= undefined && req.body.dishes.length>0){
             let dishes = req.body.dishes;
