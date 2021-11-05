@@ -370,3 +370,41 @@ module.exports.signOut = async (req,res)=>
         })
     }
 }
+
+module.exports.getChefByDishAndLocation = async (req,res)=>
+{
+    try
+    {
+        logger.info(`${fileName} getChefByDishAndLocation() called`);
+        let dishId = req.body.dishId;
+        let location = req.body.location;
+        let details = await userModels.getChefByDishAndLocation(location,dishId);
+        if(details.rowCount>0)
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:200,
+                data:details.rows
+            })
+        }
+        else
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`No Chefs found`,
+                statusCode:200,
+                data:[]
+            })
+        }
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getChefByDishAndLocation() ${error.message}`);
+        return res.status(500).json({
+            statusCode:500,
+            status:`error`,
+            message:error.message
+        })
+    }
+}

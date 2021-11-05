@@ -127,3 +127,23 @@ module.exports.addChefDishes = async (columns,values)=>
         throw new Error(error.message);
     }
 }
+
+module.exports.getChefByDishAndLocation = async (location,dishId)=>
+{
+    logger.info(`${fileName} getChefByDishAndLocation() called`)
+    let sqlQuery = `select u.id, u.name, u.email, u.mobile_number, u.rating, u.charges, u.profile_picture from "Users" as u, "Chef_Dishes" as cd where u.location = $1 and u.id = cd.user_id and cd.dish_id = $2`;
+    let data = [location,dishId];
+    let client = await dbUtil.getTransaction();
+    try
+    {
+        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,data);
+        await dbUtil.commit(client);
+        return result;
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getChefByDishAndLocation() ${error.message}`);
+        await dbUtil.rollback(client);
+        throw new Error(error.message);
+    }
+}

@@ -14,21 +14,18 @@ router.get("/getDish",dishController.dishGet);
 router.get("/getDishByID" ,dishController.dishGetByID);
 router.post('/dish-add',dishController.dishadd);
 
-
-
 // Users
 router.post("/signUp",userController.signUp);
 router.post("/signIn",userController.signIn);
 router.post("/signOut",userController.signOut);
 router.post("/autoSignIn",userController.autoSignIn);
 router.get("/getUserDetailsById",userController.getUserDetailsById);
-
+router.get("/getChefByDishAndLocation",userController.getChefByDishAndLocation);
 // Orders
 router.post("/addOrder",ordersController.addOrder);
 router.get("/getOrdersByChefId",ordersController.getOrdersByChefId);
 router.post("/updateOrderDetails",ordersController.updateOrderDetails);
 router.get("/getOrderDetailsById",ordersController.getOrderDetailsById);
-
 
 // Requests 
 router.post("/requestAdd",requestController.requestAdd);
