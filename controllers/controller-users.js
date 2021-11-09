@@ -60,7 +60,7 @@ module.exports.signUp = async (req,res)=>
             charges,
             location
         ];
-        if(role=="chef" && req.body.dishes!= undefined && req.body.dishes.length>0){
+        if(role=="Chef" && req.body.dishes!= undefined && req.body.dishes.length>0){
             let dishes = req.body.dishes;
             const columns = [
                 "user_id",
