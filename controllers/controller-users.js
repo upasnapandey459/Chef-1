@@ -376,8 +376,9 @@ module.exports.getChefByDishAndLocation = async (req,res)=>
     try
     {
         logger.info(`${fileName} getChefByDishAndLocation() called`);
-        let dishId = req.body.dishId;
-        let location = req.body.location;
+        let dishId = req.query.dishId;
+        let location = req.query.location;
+        
         let details = await userModels.getChefByDishAndLocation(location,dishId);
         if(details.rowCount>0)
         {
