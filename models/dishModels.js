@@ -32,10 +32,11 @@ module.exports.dishGet = async ()=>
 {
     logger.info(`${fileName} dishget called`)
     let sqlQuery = `select * from "Dishes"`;
+    let data = [];
     let client = await dbUtil.getTransaction();
     try
     {
-        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery);
+        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,data);
         await dbUtil.commit(client);
         return result;
 
