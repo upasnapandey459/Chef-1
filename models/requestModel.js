@@ -12,7 +12,7 @@ module.exports.requestAdd = async (columns,values)=>
 {
     logger.info(`${fileName} requestModel called`);
     let sqlQuery = insertIntoTable("Requests",columns);
-    sql += " returning *";
+    sqlQuery += " returning *";
     let client = await dbUtil.getTransaction();
     try
     {
