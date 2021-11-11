@@ -11,11 +11,12 @@ module.exports.addOrder = async (req,res)=>
     {
         logger.info(`${fileName} addOrder() called`);
         let id = uniqueId.generateConflictHandlingId();
-        req.body["status"] = "Ongoing";
+        // req.body["status"] = "Accepted";
         req.body["id"]=id;
+        let requestId = req.body.requestId;
         const columns = Object.keys(req.body);
         const values = Object.values(req.body);
-        let details = await ordersModel.addOrder(columns,values);
+        let details = await ordersModel.addOrder(columns,values,requestId);
         if(details.rowCount>0)
         {
             return res.status(200).json({

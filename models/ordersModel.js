@@ -7,15 +7,17 @@ const {
 } = require('../utils/db_related/queryUtil');
 const fileName = 'ordersModel.js';
 
-module.exports.addOrder = async (columns,values)=>
+module.exports.addOrder = async (columns,values,requestId)=>
 {
     logger.info(`${fileName} addOrder() called`);
     let sqlQuery = insertIntoTable("Orders",columns);
     sqlQuery += ` returning *`;
+    let deleteQuery = `delete from "Requests" where id = $1`
     let client = await dbUtil.getTransaction();
     try
     {
         let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,values);
+        await dbUtil.sqlExecSingleRow(client,deleteQuery,[requestId]);
         await dbUtil.commit(client);
         return result;
     }
