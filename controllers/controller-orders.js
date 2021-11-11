@@ -14,6 +14,7 @@ module.exports.addOrder = async (req,res)=>
         // req.body["status"] = "Accepted";
         req.body["id"]=id;
         let requestId = req.body.requestId;
+        delete req.body.requestId;
         const columns = Object.keys(req.body);
         const values = Object.values(req.body);
         let details = await ordersModel.addOrder(columns,values,requestId);
