@@ -181,3 +181,41 @@ module.exports.getRequestsByChefId = async (req,res)=>
         })
     }
 }
+
+
+module.exports.getRequestsByUserId = async (req,res)=>
+{
+    try
+    {
+        logger.info(`${fileName} getRequestsByUserId() called`);
+        let id = req.query.id;
+        let details = await requestModel.getRequestsByUserId(id);
+        if(details.rowCount>0)
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:200,
+                data:details.rows
+            })
+        }
+        else
+        {
+            return res.status(400).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:400,
+                data:[]
+            })
+        }
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getRequestsByUserId() ${error.message}`);
+        return res.status(500).json({
+            statusCode:500,
+            status:`error`,
+            message:error.message
+        })
+    }
+}

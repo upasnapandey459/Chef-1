@@ -88,3 +88,24 @@ module.exports.getRequestsByChefId = async (id)=>
         throw new Error(error.message);
     }
 }
+
+
+module.exports.getRequestsByUserId = async (id)=>
+{
+    logger.info(`${fileName} getRequestsByUserId() called`)
+    let sqlQuery = `select r.*, u.name as username, d.name as dishname, d.picture as dishpicture  from "Requests" as r, "Dishes" as d, "Users" as u where r.userid = $1 and r.dishid = d.id and r.userid = u.id`;
+    let data = [id];
+    let client = await dbUtil.getTransaction();
+    try
+    {
+        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,data);
+        await dbUtil.commit(client);
+        return result;
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getRequestsByUserId() ${error.message}`);
+        await dbUtil.rollback(client);
+        throw new Error(error.message);
+    }
+}

@@ -62,6 +62,7 @@ module.exports.signUp = async (req,res)=>
         ];
         if(role=="Chef" && req.body.dishes!= undefined && req.body.dishes.length>0){
             let dishes = req.body.dishes;
+            console.log(req.body)
             const columns = [
                 "user_id",
                 "dish_id"
