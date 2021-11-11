@@ -69,13 +69,11 @@ module.exports.requestAdd = async (req,res)=>
     }
 }
 
-
-
 module.exports.getRequestbyID = async (req,res)=>
 {
     try
     {
-        logger.info(`${fileName} getid called`);
+        logger.info(`${fileName} getRequestbyID called`);
         let id = req.query.id;
         let details = await requestModel.getRequestbyID(id);
         if(details.rowCount>0)
@@ -139,6 +137,43 @@ module.exports.deleteRequestById = async (req,res)=>
     catch(error)
     {
         logger.error(`${fileName} deleteRequestById ${error.message}`);
+        return res.status(500).json({
+            statusCode:500,
+            status:`error`,
+            message:error.message
+        })
+    }
+}
+
+module.exports.getRequestsByChefId = async (req,res)=>
+{
+    try
+    {
+        logger.info(`${fileName} getRequestsByChefId() called`);
+        let id = req.query.id;
+        let details = await requestModel.getRequestsByChefId(id);
+        if(details.rowCount>0)
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:200,
+                data:details.rows
+            })
+        }
+        else
+        {
+            return res.status(400).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:400,
+                data:[]
+            })
+        }
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getRequestsByChefId() ${error.message}`);
         return res.status(500).json({
             statusCode:500,
             status:`error`,

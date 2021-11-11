@@ -21,6 +21,7 @@ router.post("/signOut",userController.signOut);
 router.post("/autoSignIn",userController.autoSignIn);
 router.get("/getUserDetailsById",userController.getUserDetailsById);
 router.get("/getChefByDishAndLocation",userController.getChefByDishAndLocation);
+
 // Orders
 router.post("/addOrder",ordersController.addOrder);
 router.get("/getOrdersByChefId",ordersController.getOrdersByChefId);
@@ -31,6 +32,7 @@ router.get("/getOrderDetailsById",ordersController.getOrderDetailsById);
 router.post("/requestAdd",requestController.requestAdd);
 router.delete('/requestDelete',requestController.deleteRequestById)
 router.get('/getRequestById',requestController.getRequestbyID)
+router.get('/getRequestsByChefId',requestController.getRequestsByChefId)
 
 
 module.exports = router

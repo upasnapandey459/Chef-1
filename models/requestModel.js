@@ -12,6 +12,7 @@ module.exports.requestAdd = async (columns,values)=>
 {
     logger.info(`${fileName} requestModel called`);
     let sqlQuery = insertIntoTable("Requests",columns);
+    sql += " returning *";
     let client = await dbUtil.getTransaction();
     try
     {
@@ -27,8 +28,6 @@ module.exports.requestAdd = async (columns,values)=>
         throw new Error(error.message);
     }
 }
-
-
 
 module.exports.getRequestbyID = async (id)=>
 {
@@ -65,6 +64,26 @@ module.exports.deleteRequestById = async (id)=>
     catch(error)
     {
         logger.error(`${fileName} deleteRequestById ${error.message}`);
+        await dbUtil.rollback(client);
+        throw new Error(error.message);
+    }
+}
+
+module.exports.getRequestsByChefId = async (id)=>
+{
+    logger.info(`${fileName} getRequestsByChefId() called`)
+    let sqlQuery = `select r.*, u.name as username, d.name as dishname, d.picture as dishpicture  from "Requests" as r, "Dishes" as d, "Users" as u where r.chefid = $1 and r.dishid = d.id and r.userid = u.id`;
+    let data = [id];
+    let client = await dbUtil.getTransaction();
+    try
+    {
+        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,data);
+        await dbUtil.commit(client);
+        return result;
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getRequestsByChefId() ${error.message}`);
         await dbUtil.rollback(client);
         throw new Error(error.message);
     }
