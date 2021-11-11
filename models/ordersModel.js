@@ -31,7 +31,6 @@ module.exports.addOrder = async (columns,values,requestId)=>
 
 module.exports.getOrdersByChefId = async (id)=>
 {
-    let sqlQuery = `select r.*, u.name as username, d.name as dishname, d.picture as dishpicture  from "Requests" as r, "Dishes" as d, "Users" as u where r.userid = $1 and r.dishid = d.id and r.userid = u.id`;
     logger.info(`${fileName} getOrdersByChefId() called`)
     let sqlQuery = `select o.*, u.name as username, d.name as dishname, d.picture as dishpicture from "Orders" as o, "Dishes" as d, "Users" as u where o.chef_id = $1 and o.dish_id = d.id and u.id = o.user_id`;
     let data = [id];
