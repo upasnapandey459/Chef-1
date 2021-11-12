@@ -7,15 +7,17 @@ const {
 } = require('../utils/db_related/queryUtil');
 const fileName = 'ordersModel.js';
 
-module.exports.addOrder = async (columns,values)=>
+module.exports.addOrder = async (columns,values,requestId)=>
 {
     logger.info(`${fileName} addOrder() called`);
     let sqlQuery = insertIntoTable("Orders",columns);
     sqlQuery += ` returning *`;
+    let deleteQuery = `delete from "Requests" where id = $1`
     let client = await dbUtil.getTransaction();
     try
     {
         let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,values);
+        await dbUtil.sqlExecSingleRow(client,deleteQuery,[requestId]);
         await dbUtil.commit(client);
         return result;
     }
@@ -30,7 +32,7 @@ module.exports.addOrder = async (columns,values)=>
 module.exports.getOrdersByChefId = async (id)=>
 {
     logger.info(`${fileName} getOrdersByChefId() called`)
-    let sqlQuery = `select * from "Orders" where chef_id = $1`;
+    let sqlQuery = `select o.*, u.name as username, d.name as dishname, d.picture as dishpicture from "Orders" as o, "Dishes" as d, "Users" as u where o.chef_id = $1 and o.dish_id = d.id and u.id = o.user_id`;
     let data = [id];
     let client = await dbUtil.getTransaction();
     try
