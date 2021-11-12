@@ -157,3 +157,42 @@ module.exports.getOrderDetailsById = async (req,res)=>
         })
     }
 }
+
+module.exports.getOrderDetailsByRequestId = async (req,res)=>
+{
+    try
+    {
+        logger.info(`${fileName} getOrderDetailsByRequestId() called`);
+        let id = req.query.id;
+        let details = await ordersModel.getOrderDetailsByRequestId(id);
+        if(details.rowCount>0)
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:200,
+                data:details.rows
+            })
+        }
+        else
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`No orders found`,
+                statusCode:200,
+                data:[]
+            })
+        }
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getOrderDetailsByRequestId() ${error.message}`);
+        return res.status(500).json({
+            statusCode:500,
+            status:`error`,
+            message:error.message
+        })
+    }
+}
+
+

@@ -86,3 +86,24 @@ module.exports.getOrderDetailsById = async (id)=>
         throw new Error(error.message);
     }
 }
+
+module.exports.getOrderDetailsByRequestId = async (id)=>
+{
+    logger.info(`${fileName} getOrderDetailsByRequestId() called`)
+    let sqlQuery = `select * from "Orders" where request_id = $1`;
+    let data = [id];
+    let client = await dbUtil.getTransaction();
+    try
+    {
+        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,data);
+        await dbUtil.commit(client);
+        return result;
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getOrderDetailsByRequestId() ${error.message}`);
+        await dbUtil.rollback(client);
+        throw new Error(error.message);
+    }
+}
+
