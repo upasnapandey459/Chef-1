@@ -14,7 +14,7 @@ module.exports.addOrder = async (req,res)=>
         console.log("Req Body : ",req.body);
         // req.body["status"] = "Accepted";
         req.body["id"]=id;
-        let requestId = req.body.requestId;
+        let requestId = req.body.request_id;
         console.log("Req Body : ",req.body);
         console.log("Id : ",requestId);
         delete req.body.requestId;
