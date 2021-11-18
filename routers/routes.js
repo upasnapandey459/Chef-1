@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const userController = require("../controllers/controller-users");
 const dishController = require("../controllers/controller-dishes");
-const requestController = require("../controllers/controller-requests");
 const ordersController = require("../controllers/controller-orders");
+const requestController = require("../controllers/controller-requests");
+const locationController = require("../controllers/controller-location");
 
 router.get("/check",(req,res)=>{
     console.log("Check OK");
@@ -36,5 +37,8 @@ router.get('/getRequestById',requestController.getRequestbyID)
 router.get('/getRequestsByChefId',requestController.getRequestsByChefId)
 router.get('/getRequestsByUserId',requestController.getRequestsByUserId)
 
+// Location
+router.get("/getLocation",locationController.getLocation);
+router.post("/updateLocation",locationController.updateLocation);
 
 module.exports = router
