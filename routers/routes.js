@@ -31,10 +31,10 @@ router.get("/getOrderDetailsByRequestId",ordersController.getOrderDetailsByReque
 
 // Requests 
 router.post("/requestAdd",requestController.requestAdd);
-router.delete('/requestDelete',requestController.deleteRequestById)
-router.get('/getRequestById',requestController.getRequestbyID)
-router.get('/getRequestsByChefId',requestController.getRequestsByChefId)
-router.get('/getRequestsByUserId',requestController.getRequestsByUserId)
+router.delete('/requestDelete',requestController.deleteRequestById);
+router.get('/getRequestById',requestController.getRequestbyID);
+router.get('/getRequestsByChefId',requestController.getRequestsByChefId);
+router.get('/getRequestsByUserId',requestController.getRequestsByUserId);
 
 
 module.exports = router
