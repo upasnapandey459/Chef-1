@@ -1,4 +1,4 @@
-const logger = require('../utils/other/logger')
+const logger = require('../utils/other/logger').logger;
 const dbUtil = require('../utils/db_related/dbUtil')
 const {
     insertIntoTable,

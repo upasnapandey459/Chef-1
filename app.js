@@ -5,7 +5,7 @@ const routes = require("./routers/routes");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const config = require("./config/config");
-const logger = require("./utils/other/logger");
+const logger = require("./utils/other/logger").logger;
 const cluster = require('cluster');
 let numCPUs = require('os').cpus().length;
 

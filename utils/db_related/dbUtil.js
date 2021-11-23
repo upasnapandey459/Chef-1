@@ -1,6 +1,6 @@
 const { Pool } = require('pg');
 const config = require('../../config/config');
-const logger = require('../other/logger');
+const logger = require('../other/logger').logger;
 
 const pgconfig = {
     user: config.db.user,

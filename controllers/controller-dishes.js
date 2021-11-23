@@ -1,5 +1,7 @@
 const fileName = `controller-dishes.js`;
-const logger = require('../utils/other/logger');
+const logger = require('../utils/other/logger').logger;
+const errorLogger = require('../utils/other/logger').errorLogger;
+const debugLogger = require('../utils/other/logger').debugLogger;
 const dishModel = require('../models/dishModels');
 const errMessage  = 'Something went wrong';
 const successMessage = 'Successfully Done!';
@@ -63,12 +65,12 @@ module.exports.dishGet = async (req,res)=>
 {
     try
     {
-        logger.info(`${fileName} dishget called`);
+        debugLogger.info(`${fileName} dishget called`);
         let details = await dishModel.dishGet();
         // console.log(details)
-       
         if(details.rowCount>0)
         {
+            logger.info("Success");
             return res.status(200).json({
                 status:`success`,
                 message:`Successfully Done!`,
@@ -78,6 +80,7 @@ module.exports.dishGet = async (req,res)=>
         }
         else
         {
+            errorLogger.error("Error");
             return res.status(400).json({
                 status:`error`,
                 message:errMessage,
@@ -88,7 +91,7 @@ module.exports.dishGet = async (req,res)=>
     }
     catch(error)
     {
-        logger.error(`${fileName} dishget ${error.message}`);
+        errorLogger.error(`${fileName} dishget ${error.message}`);
         return res.status(500).json({
             statusCode:500,
             status:`error`,
