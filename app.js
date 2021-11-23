@@ -22,7 +22,7 @@ const PORT = config.port;
 
 
 if (numCPUs > 4) {
-    numCPUs = 4;
+    numCPUs = 1;
 }
 
 if (cluster.isMaster) {

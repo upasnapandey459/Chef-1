@@ -17,7 +17,7 @@ const logger = winston.createLogger({
     transports: [
         new winston.transports.File({
             level:'info',
-            filename:`./logs/info/info-logs-${new Date().getTime()}.json`,
+            filename:`./logs/info/info-logs.json`,
             json:true,
             datePattern:'yyyy-MM-dd',
             prepend:true,
@@ -61,7 +61,7 @@ const errorLogger = winston.createLogger({
     transports: [
         new winston.transports.Console({colorize:true}),
         new winston.transports.File({
-            filename:`./logs/error/error-log-${new Date().getTime()}.json`,
+            filename:`./logs/error/error-log.json`,
             level:'error',
             handleExceptions: true,
             colorize:true,
@@ -84,7 +84,7 @@ const debugLogger = winston.createLogger({
     ),
     transports: [
         new winston.transports.File({
-            filename:`./logs/debug/debug-log-${new Date().getTime()}.json`,
+            filename:`./logs/debug/debug-log.json`,
             level:'debug',
             json:true,
             datePattern:'yyyy-MM-dd',
