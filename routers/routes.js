@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const logger = require("../utils/other/logger").logger;
 const userController = require("../controllers/controller-users");
 const dishController = require("../controllers/controller-dishes");
 const ordersController = require("../controllers/controller-orders");
@@ -7,6 +8,7 @@ const locationController = require("../controllers/controller-location");
 
 router.get("/check",(req,res)=>{
     console.log("Check OK");
+    logger.info(`Check OK`);
     return res.send("Check OK")
 });
 
