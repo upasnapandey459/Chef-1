@@ -1,5 +1,7 @@
 const fileName = `controller-location`;
-const logger = require('../utils/other/logger');
+const logger = require('../utils/other/logger').logger;
+const errorLogger = require('../utils/other/logger').errorLogger;
+const debugLogger = require('../utils/other/logger').debugLogger;
 const locationModel = require('../models/locationModel');
 const errMessage  = 'Something went wrong';
 const successMessage = 'Successfully Done!';
