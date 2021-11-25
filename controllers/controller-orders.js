@@ -91,6 +91,43 @@ module.exports.getOrdersByChefId = async (req,res)=>
     }
 }
 
+module.exports.getOrdersByUserId = async (req,res)=>
+{
+    try
+    {
+        logger.info(`${fileName} getOrdersByUserId() called`);
+        let id = req.query.id;
+        let details = await ordersModel.getOrdersByUserId(id);
+        if(details.rowCount>0)
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`Successfully Done!`,
+                statusCode:200,
+                data:details.rows
+            })
+        }
+        else
+        {
+            return res.status(200).json({
+                status:`success`,
+                message:`No orders found`,
+                statusCode:200,
+                data:[]
+            })
+        }
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getOrdersByUserId() ${error.message}`);
+        return res.status(500).json({
+            statusCode:500,
+            status:`error`,
+            message:error.message
+        })
+    }
+}
+
 module.exports.updateOrderDetails = async (req,res)=>
 {
     try

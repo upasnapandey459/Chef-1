@@ -28,6 +28,7 @@ router.get("/getChefByDishAndLocation",userController.getChefByDishAndLocation);
 // Orders
 router.post("/addOrder",ordersController.addOrder);
 router.get("/getOrdersByChefId",ordersController.getOrdersByChefId);
+router.get("/getOrdersByUserId",ordersController.getOrdersByUserId);
 router.post("/updateOrderDetails",ordersController.updateOrderDetails);
 router.get("/getOrderDetailsById",ordersController.getOrderDetailsById);
 router.get("/getOrderDetailsByRequestId",ordersController.getOrderDetailsByRequestId);

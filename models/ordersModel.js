@@ -51,6 +51,26 @@ module.exports.getOrdersByChefId = async (id)=>
     }
 }
 
+module.exports.getOrdersByUserId = async (id)=>
+{
+    logger.info(`${fileName} getOrdersByUserId() called`)
+    let sqlQuery = `select o.*, u.name as chefname, d.name as dishname, d.picture as dishpicture from "Orders" as o, "Dishes" as d, "Users" as u where o.user_id = $1 and o.dish_id = d.id and u.id = o.chef_id order by time desc`;
+    let data = [id];
+    let client = await dbUtil.getTransaction();
+    try
+    {
+        let result = await dbUtil.sqlExecSingleRow(client,sqlQuery,data);
+        await dbUtil.commit(client);
+        return result;
+    }
+    catch(error)
+    {
+        logger.error(`${fileName} getOrdersByUserId() ${error.message}`);
+        await dbUtil.rollback(client);
+        throw new Error(error.message);
+    }
+}
+
 module.exports.updateOrderDetails = async (id,status)=>
 {
     logger.info(`${fileName} updateOrderDetails() called`)
