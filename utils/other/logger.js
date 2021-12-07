@@ -1,3 +1,4 @@
+require('dotenv').config();
 const config = require('../../config/config');
 const winston = require("winston")
 // const { createLogger, format, transports } = require('winston');
@@ -17,7 +18,7 @@ const logger = winston.createLogger({
     transports: [
         new winston.transports.File({
             level:'info',
-            filename:`./logs/info/info-logs.json`,
+            filename:`${process.env.LOGS_PATH}/info/info-logs.json`,
             json:true,
             datePattern:'yyyy-MM-dd',
             prepend:true,
@@ -61,7 +62,7 @@ const errorLogger = winston.createLogger({
     transports: [
         new winston.transports.Console({colorize:true}),
         new winston.transports.File({
-            filename:`./logs/error/error-log.json`,
+            filename:`${process.env.LOGS_PATH}/error/error-log.json`,
             level:'error',
             handleExceptions: true,
             colorize:true,
@@ -84,7 +85,7 @@ const debugLogger = winston.createLogger({
     ),
     transports: [
         new winston.transports.File({
-            filename:`./logs/debug/debug-log.json`,
+            filename:`${process.env.LOGS_PATH}/debug/debug-log.json`,
             level:'debug',
             json:true,
             datePattern:'yyyy-MM-dd',
